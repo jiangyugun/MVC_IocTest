@@ -6,26 +6,28 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Mvc_Repository.Models;
+using Mvc_Repository.Service;
+using Mvc_Repository.Service.Interface;
 
 namespace Mvc_Repository.Controllers
 {
     public class ProductController : Controller
     {
-        private IProductRepository productRepository;
-        private ICategoryRepository categoryRepository;
+        private IProductService productService;
+        private ICategoryService categoryService;
 
         public IEnumerable<Categories> Categories
         {
             get
             {
-                return categoryRepository.GetAll();
+                return categoryService.GetAll();
             }
         }
 
         public ProductController()
         {
-            this.productRepository = new ProductRepository();
-            this.categoryRepository = new CategoryRepository();
+            this.productService = new ProductService();
+            this.categoryService = new CategoryService();
         }
 
         public ActionResult Index(string category = "all")
@@ -37,8 +39,8 @@ namespace Mvc_Repository.Controllers
                 : this.CategorySelectList("all");
 
             var result = category.Equals("all", StringComparison.OrdinalIgnoreCase)
-                ? productRepository.GetAll()
-                : productRepository.GetByCateogy(categoryID);
+                ? productService.GetAll()
+                : productService.GetByCategory(categoryID);
 
             var products = result.OrderByDescending(x => x.ProductID).ToList();
 
@@ -68,7 +70,7 @@ namespace Mvc_Repository.Controllers
                 Selected = selectedValue.Equals("all", StringComparison.OrdinalIgnoreCase)
             });
 
-            var categories = categoryRepository.GetAll().OrderBy(x => x.CategoryID);
+            var categories = categoryService.GetAll().OrderBy(x => x.CategoryID);
 
             foreach (var c in categories)
             {
@@ -88,7 +90,7 @@ namespace Mvc_Repository.Controllers
         {
             if (!id.HasValue) return RedirectToAction("index");
 
-            Products product = productRepository.GetByID(id.Value);
+            Products product = productService.GetByID(id.Value);
             if (product == null)
             {
                 return HttpNotFound();
@@ -114,7 +116,7 @@ namespace Mvc_Repository.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.productRepository.Create(products);
+                this.productService.Create(products);
                 return RedirectToAction("Index", new { category = category });
             }
 
@@ -129,7 +131,7 @@ namespace Mvc_Repository.Controllers
         {
             if (!id.HasValue) return RedirectToAction("index");
 
-            Products product = this.productRepository.GetByID(id.Value);
+            Products product = this.productService.GetByID(id.Value);
             if (product == null)
             {
                 return HttpNotFound();
@@ -146,7 +148,7 @@ namespace Mvc_Repository.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.productRepository.Update(products);
+                this.productService.Update(products);
                 return RedirectToAction("Index", new { category = category });
             }
 
@@ -161,7 +163,7 @@ namespace Mvc_Repository.Controllers
         {
             if (!id.HasValue) return RedirectToAction("index");
 
-            Products product = this.productRepository.GetByID(id.Value);
+            Products product = this.productService.GetByID(id.Value);
             if (product == null)
             {
                 return HttpNotFound();
@@ -175,9 +177,7 @@ namespace Mvc_Repository.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id, string category)
         {
-            Products product = this.productRepository.GetByID(id);
-            this.productRepository.Delete(product);
-
+            this.productService.Delete(id);
             return RedirectToAction("Index", new { category = category });
         }
     }

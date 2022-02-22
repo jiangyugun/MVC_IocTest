@@ -207,6 +207,10 @@
       <Project>{2a29ba78-422b-4b9c-a411-6118f9c9d970}</Project>
       <Name>Mvc_Repository.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mvc_Repository.Service\Mvc_Repository.Service.csproj">
+      <Project>{50529e77-57b6-47ea-878e-286b89f21b30}</Project>
+      <Name>Mvc_Repository.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
