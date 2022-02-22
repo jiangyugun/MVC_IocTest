@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace MVC_IocTest.Models.Interface
 
         void Delete(TEntity instance);
 
-        TEntity Get(int primaryID);
+        TEntity Get(Expression<Func<TEntity, bool>> predicate);
 
         IQueryable<TEntity> GetAll();
 
