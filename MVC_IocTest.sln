@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32126.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_IocTest", "MVC_IocTest\MVC_IocTest.csproj", "{1B7FF1FC-5A89-4D1E-8863-91C0776B4F5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_IocTest.Tests", "MVC_IocTest.Tests\MVC_IocTest.Tests.csproj", "{91030E5F-DBA6-41AF-825D-2264B76CA0EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B7FF1FC-5A89-4D1E-8863-91C0776B4F5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B7FF1FC-5A89-4D1E-8863-91C0776B4F5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B7FF1FC-5A89-4D1E-8863-91C0776B4F5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B7FF1FC-5A89-4D1E-8863-91C0776B4F5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91030E5F-DBA6-41AF-825D-2264B76CA0EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91030E5F-DBA6-41AF-825D-2264B76CA0EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91030E5F-DBA6-41AF-825D-2264B76CA0EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91030E5F-DBA6-41AF-825D-2264B76CA0EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18AD4B69-CBFE-4D04-BF72-28F9F5A46262}
+	EndGlobalSection
+EndGlobal
