@@ -7,93 +7,28 @@ using System.Web;
 
 namespace MVC_IocTest.Models.Repositiry
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : GenericRepository<Products>, IProductRepository
     {
-        protected TestDBEntities db
+        /// <summary>
+     /// Gets the by ID.
+     /// </summary>
+     /// <param name="productID">The product ID.</param>
+     /// <returns></returns>
+     /// <exception cref="System.NotImplementedException"></exception>
+        public Products GetByID(int productID)
         {
-            get;
-            private set;
+            return this.Get(x => x.ProductID == productID);
         }
 
-        public ProductRepository()
+        /// <summary>
+        /// Gets the by cateogy.
+        /// </summary>
+        /// <param name="categoryID">The category ID.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public IEnumerable<Products> GetByCateogy(int categoryID)
         {
-            this.db = new TestDBEntities();
-        }
-
-
-        public void Create(Products instance)
-        {
-            if (instance == null)
-            {
-                throw new ArgumentNullException("instance");
-            }
-            else
-            {
-                db.Products.Add(instance);
-                this.SaveChanges();
-            }
-        }
-
-        public void Update(Products instance)
-        {
-            if (instance == null)
-            {
-                throw new ArgumentNullException("instance");
-            }
-            else
-            {
-                db.Entry(instance).State = EntityState.Modified;
-                this.SaveChanges();
-            }
-        }
-
-        public void Delete(Products instance)
-        {
-            if (instance == null)
-            {
-                throw new ArgumentNullException("instance");
-            }
-            else
-            {
-                db.Entry(instance).State = EntityState.Deleted;
-                this.SaveChanges();
-            }
-        }
-
-
-        public Products Get(int productID)
-        {
-            return db.Products.FirstOrDefault(x => x.ProductID == productID);
-        }
-
-        public IQueryable<Products> GetAll()
-        {
-            return db.Products.Include(p => p.Categories).OrderByDescending(x => x.ProductID);
-        }
-
-
-        public void SaveChanges()
-        {
-            this.db.SaveChanges();
-        }
-
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (this.db != null)
-                {
-                    this.db.Dispose();
-                    this.db = null;
-                }
-            }
+            return this.GetAll().Where(x => x.CategoryID == categoryID);
         }
     }
 }

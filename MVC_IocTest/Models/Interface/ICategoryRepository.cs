@@ -8,6 +8,6 @@ namespace MVC_IocTest.Models.Interface
 {
     public interface ICategoryRepository: IRepository<Categories>
     {
-
+        Categories GetByID(int categoryID);
     }
 }
