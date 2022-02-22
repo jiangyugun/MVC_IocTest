@@ -5,9 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MVC_IocTest.Models;
-using MVC_IocTest.Models.Interface;
-using MVC_IocTest.Models.Repositiry;
+using Mvc_Repository.Models;
 
 namespace Mvc_Repository.Controllers
 {

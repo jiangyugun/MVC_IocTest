@@ -1,11 +1,10 @@
-﻿using MVC_IocTest.Models.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace MVC_IocTest.Models.Repositiry
+namespace Mvc_Repository.Models
 {
     public class CategoryRepository : GenericRepository<Categories>, ICategoryRepository
     {

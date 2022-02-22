@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVC_IocTest.Models.Interface
+namespace Mvc_Repository.Models
 {
     public interface ICategoryRepository: IRepository<Categories>
     {

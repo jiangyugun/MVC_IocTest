@@ -1,5 +1,4 @@
-﻿using MVC_IocTest.Models.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 
-namespace MVC_IocTest.Models.Repositiry
+namespace Mvc_Repository.Models
 {
     public class GenericRepository<TEntity> : IRepository<TEntity>
         where TEntity : class
@@ -19,7 +18,7 @@ namespace MVC_IocTest.Models.Repositiry
         }
 
         public GenericRepository()
-            : this(new TestDBEntities())
+            : this(new TestDbEntities())
         {
         }
 

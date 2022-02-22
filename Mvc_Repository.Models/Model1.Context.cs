@@ -7,16 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MVC_IocTest.Models
+namespace Mvc_Repository.Models
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class TestDBEntities : DbContext
+    public partial class TestDbEntities : DbContext
     {
-        public TestDBEntities()
-            : base("name=TestDBEntities")
+        public TestDbEntities()
+            : base("name=TestDbEntities")
         {
         }
     

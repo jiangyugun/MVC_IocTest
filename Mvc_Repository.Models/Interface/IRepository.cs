@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MVC_IocTest.Models.Interface
+namespace Mvc_Repository.Models
 {
     public interface IRepository<TEntity> : IDisposable
         where TEntity : class
