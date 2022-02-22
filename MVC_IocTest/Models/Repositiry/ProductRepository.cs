@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MVC_IocTest.Models.Repositiry
 {
-    public class ProductRepository : IProductRepository, IDisposable
+    public class ProductRepository : IProductRepository
     {
         protected TestDBEntities db
         {
