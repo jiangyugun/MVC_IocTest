@@ -6,36 +6,53 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MVC_IocTest.Models;
+using MVC_IocTest.Models.Interface;
+using MVC_IocTest.Models.Repositiry;
 
 namespace Mvc_Repository.Controllers
 {
     public class ProductController : Controller
     {
-        private TestDBEntities db = new TestDBEntities();
+        private IProductRepository productRepository;
+        private ICategoryRepository categoryRepository;
+
+        public IEnumerable<Categories> Categories
+        {
+            get
+            {
+                return categoryRepository.GetAll();
+            }
+        }
+
+        public ProductController()
+        {
+            this.productRepository = new ProductRepository();
+            this.categoryRepository = new CategoryRepository();
+        }
 
         public ActionResult Index()
         {
-            var products = db.Products.Include(p => p.Categories).OrderByDescending(x => x.ProductID);
-            return View(products.ToList());
+            var products = productRepository.GetAll().ToList();
+            return View(products);
         }
 
         //=========================================================================================
 
         public ActionResult Details(int id = 0)
         {
-            Products products = db.Products.Find(id);
-            if (products == null)
+            Products product = productRepository.Get(id);
+            if (product == null)
             {
                 return HttpNotFound();
             }
-            return View(products);
+            return View(product);
         }
 
         //=========================================================================================
 
         public ActionResult Create()
         {
-            ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName");
+            ViewBag.CategoryID = new SelectList(this.Categories, "CategoryID", "CategoryName");
             return View();
         }
 
@@ -44,12 +61,11 @@ namespace Mvc_Repository.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Products.Add(products);
-                db.SaveChanges();
+                this.productRepository.Create(products);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", products.CategoryID);
+            ViewBag.CategoryID = new SelectList(this.Categories, "CategoryID", "CategoryName", products.CategoryID);
             return View(products);
         }
 
@@ -57,13 +73,13 @@ namespace Mvc_Repository.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            Products products = db.Products.Find(id);
-            if (products == null)
+            Products product = this.productRepository.Get(id);
+            if (product == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", products.CategoryID);
-            return View(products);
+            ViewBag.CategoryID = new SelectList(this.Categories, "CategoryID", "CategoryName", product.CategoryID);
+            return View(product);
         }
 
         [HttpPost]
@@ -71,11 +87,10 @@ namespace Mvc_Repository.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(products).State = EntityState.Modified;
-                db.SaveChanges();
+                this.productRepository.Update(products);
                 return RedirectToAction("Index");
             }
-            ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", products.CategoryID);
+            ViewBag.CategoryID = new SelectList(this.Categories, "CategoryID", "CategoryName", products.CategoryID);
             return View(products);
         }
 
@@ -83,29 +98,20 @@ namespace Mvc_Repository.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            Products products = db.Products.Find(id);
-            if (products == null)
+            Products product = this.productRepository.Get(id);
+            if (product == null)
             {
                 return HttpNotFound();
             }
-            return View(products);
+            return View(product);
         }
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Products products = db.Products.Find(id);
-            db.Products.Remove(products);
-            db.SaveChanges();
+            Products product = this.productRepository.Get(id);
+            this.productRepository.Delete(product);
             return RedirectToAction("Index");
-        }
-
-        //=========================================================================================
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

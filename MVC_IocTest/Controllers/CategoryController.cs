@@ -7,19 +7,23 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MVC_IocTest.Models;
+using MVC_IocTest.Models.Interface;
+using MVC_IocTest.Models.Repositiry;
 
 namespace Mvc_Repository.Controllers
 {
     public class CategoryController : Controller
     {
+        private ICategoryRepository categoryRepository;
+        public CategoryController()
+        {
+            this.categoryRepository = new CategoryRepository();
+        }
+
         public ActionResult Index()
         {
-            using (TestDBEntities db = new TestDBEntities())
-            {
-                var query = db.Categories.OrderBy(x => x.CategoryID);
-                ViewData.Model = query.ToList();
-                return View();
-            }
+            var categories = this.categoryRepository.GetAll().ToList();
+            return View(categories);
         }
 
         //=========================================================================================
@@ -32,12 +36,9 @@ namespace Mvc_Repository.Controllers
             }
             else
             {
-                using (TestDBEntities db = new TestDBEntities())
-                {
-                    var model = db.Categories.FirstOrDefault(x => x.CategoryID == id.Value);
-                    ViewData.Model = model;
-                    return View();
-                }
+                var category = this.categoryRepository.Get(id.Value);
+                return View(category);
+
             }
         }
 
@@ -53,11 +54,7 @@ namespace Mvc_Repository.Controllers
         {
             if (category != null && ModelState.IsValid)
             {
-                using (TestDBEntities db = new TestDBEntities())
-                {
-                    db.Categories.Add(category);
-                    db.SaveChanges();
-                }
+                this.categoryRepository.Create(category);
                 return RedirectToAction("index");
             }
             else
@@ -76,12 +73,8 @@ namespace Mvc_Repository.Controllers
             }
             else
             {
-                using (TestDBEntities db = new TestDBEntities())
-                {
-                    var model = db.Categories.FirstOrDefault(x => x.CategoryID == id.Value);
-                    ViewData.Model = model;
-                    return View();
-                }
+                var category = this.categoryRepository.Get(id.Value);
+                return View(category);
             }
         }
 
@@ -90,12 +83,8 @@ namespace Mvc_Repository.Controllers
         {
             if (category != null && ModelState.IsValid)
             {
-                using (TestDBEntities db = new TestDBEntities())
-                {
-                    db.Entry(category).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return View(category);
-                }
+                this.categoryRepository.Update(category);
+                return View(category);
             }
             else
             {
@@ -113,12 +102,8 @@ namespace Mvc_Repository.Controllers
             }
             else
             {
-                using (TestDBEntities db = new TestDBEntities())
-                {
-                    var model = db.Categories.FirstOrDefault(x => x.CategoryID == id.Value);
-                    ViewData.Model = model;
-                    return View();
-                }
+                var category = this.categoryRepository.Get(id.Value);
+                return View(category);
             }
         }
 
@@ -127,12 +112,8 @@ namespace Mvc_Repository.Controllers
         {
             try
             {
-                using (TestDBEntities db = new TestDBEntities())
-                {
-                    var target = db.Categories.FirstOrDefault(x => x.CategoryID == id);
-                    db.Categories.Remove(target);
-                    db.SaveChanges();
-                }
+                var category = this.categoryRepository.Get(id);
+                this.categoryRepository.Delete(category);
             }
             catch (DataException)
             {
