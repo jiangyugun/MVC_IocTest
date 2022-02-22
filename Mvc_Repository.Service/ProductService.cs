@@ -11,8 +11,14 @@ namespace Mvc_Repository.Service
 {
     public class ProductService : IProductService
     {
-        private IRepository<Products> repository = new GenericRepository<Products>();
+        //private IRepository<Products> repository = new GenericRepository<Products>();
 
+        private IRepository<Products> _repository;
+
+        public ProductService(IRepository<Products> repository)
+        {
+            this._repository = repository;
+        }
 
         public Misc.IResult Create(Products instance)
         {
@@ -24,7 +30,7 @@ namespace Mvc_Repository.Service
             IResult result = new Result(false);
             try
             {
-                this.repository.Create(instance);
+                this._repository.Create(instance);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -44,7 +50,7 @@ namespace Mvc_Repository.Service
             IResult result = new Result(false);
             try
             {
-                this.repository.Update(instance);
+                this._repository.Update(instance);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -66,7 +72,7 @@ namespace Mvc_Repository.Service
             try
             {
                 var instance = this.GetByID(productID);
-                this.repository.Delete(instance);
+                this._repository.Delete(instance);
                 result.Success = true;
             }
             catch (Exception ex)
@@ -78,22 +84,22 @@ namespace Mvc_Repository.Service
 
         public bool IsExists(int productID)
         {
-            return this.repository.GetAll().Any(x => x.ProductID == productID);
+            return this._repository.GetAll().Any(x => x.ProductID == productID);
         }
 
         public Products GetByID(int productID)
         {
-            return this.repository.Get(x => x.ProductID == productID);
+            return this._repository.Get(x => x.ProductID == productID);
         }
 
         public IEnumerable<Products> GetAll()
         {
-            return this.repository.GetAll();
+            return this._repository.GetAll();
         }
 
         public IEnumerable<Products> GetByCategory(int categoryID)
         {
-            return this.repository.GetAll().Where(x => x.CategoryID == categoryID);
+            return this._repository.GetAll().Where(x => x.CategoryID == categoryID);
         }
     }
 }

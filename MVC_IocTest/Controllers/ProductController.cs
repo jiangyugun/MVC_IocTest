@@ -13,21 +13,25 @@ namespace Mvc_Repository.Controllers
 {
     public class ProductController : Controller
     {
-        private IProductService productService;
-        private ICategoryService categoryService;
+        //private IProductService productService;
+        //private ICategoryService categoryService;
+
+        private IProductService _productService;
+        private ICategoryService _categoryService;
+
 
         public IEnumerable<Categories> Categories
         {
             get
             {
-                return categoryService.GetAll();
+                return _categoryService.GetAll();
             }
         }
 
-        public ProductController()
+        public ProductController(IProductService productService, ICategoryService categoryService)
         {
-            this.productService = new ProductService();
-            this.categoryService = new CategoryService();
+            this._productService = productService;
+            this._categoryService = categoryService;
         }
 
         public ActionResult Index(string category = "all")
@@ -39,8 +43,8 @@ namespace Mvc_Repository.Controllers
                 : this.CategorySelectList("all");
 
             var result = category.Equals("all", StringComparison.OrdinalIgnoreCase)
-                ? productService.GetAll()
-                : productService.GetByCategory(categoryID);
+                ? _productService.GetAll()
+                : _productService.GetByCategory(categoryID);
 
             var products = result.OrderByDescending(x => x.ProductID).ToList();
 
@@ -70,7 +74,7 @@ namespace Mvc_Repository.Controllers
                 Selected = selectedValue.Equals("all", StringComparison.OrdinalIgnoreCase)
             });
 
-            var categories = categoryService.GetAll().OrderBy(x => x.CategoryID);
+            var categories = _categoryService.GetAll().OrderBy(x => x.CategoryID);
 
             foreach (var c in categories)
             {
@@ -90,7 +94,7 @@ namespace Mvc_Repository.Controllers
         {
             if (!id.HasValue) return RedirectToAction("index");
 
-            Products product = productService.GetByID(id.Value);
+            Products product = _productService.GetByID(id.Value);
             if (product == null)
             {
                 return HttpNotFound();
@@ -116,7 +120,7 @@ namespace Mvc_Repository.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.productService.Create(products);
+                this._productService.Create(products);
                 return RedirectToAction("Index", new { category = category });
             }
 
@@ -131,7 +135,7 @@ namespace Mvc_Repository.Controllers
         {
             if (!id.HasValue) return RedirectToAction("index");
 
-            Products product = this.productService.GetByID(id.Value);
+            Products product = this._productService.GetByID(id.Value);
             if (product == null)
             {
                 return HttpNotFound();
@@ -148,7 +152,7 @@ namespace Mvc_Repository.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.productService.Update(products);
+                this._productService.Update(products);
                 return RedirectToAction("Index", new { category = category });
             }
 
@@ -163,7 +167,7 @@ namespace Mvc_Repository.Controllers
         {
             if (!id.HasValue) return RedirectToAction("index");
 
-            Products product = this.productService.GetByID(id.Value);
+            Products product = this._productService.GetByID(id.Value);
             if (product == null)
             {
                 return HttpNotFound();
@@ -177,7 +181,7 @@ namespace Mvc_Repository.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id, string category)
         {
-            this.productService.Delete(id);
+            this._productService.Delete(id);
             return RedirectToAction("Index", new { category = category });
         }
     }
