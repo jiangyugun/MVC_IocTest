@@ -6,19 +6,8 @@ using System.Threading.Tasks;
 
 namespace MVC_IocTest.Models.Interface
 {
-    public interface IProductRepository
+    public interface IProductRepository : IRepository<Products>
     {
-        void Create(Products instance);
-
-        void Update(Products instance);
-
-        void Delete(Products instance);
-
-        Products Get(int productID);
-
-        IQueryable<Products> GetAll();
-
-        void SaveChanges();
 
     }
 }

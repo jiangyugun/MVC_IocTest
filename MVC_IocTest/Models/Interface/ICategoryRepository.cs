@@ -6,18 +6,8 @@ using System.Threading.Tasks;
 
 namespace MVC_IocTest.Models.Interface
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository: IRepository<Categories>
     {
-        void Create(Categories instance);
 
-        void Update(Categories instance);
-
-        void Delete(Categories instance);
-
-        Categories Get(int categoryID);
-
-        IQueryable<Categories> GetAll();
-
-        void SaveChanges();
     }
 }
